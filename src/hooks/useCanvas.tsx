@@ -10,7 +10,8 @@ export interface useCanvasProps<T extends keyof CanvasContext> {
     render: (context: CanvasContext[T]) => void,
 }
 
-function useCanvas<T extends keyof CanvasContext>({ contextId, render }: useCanvasProps<T>) {
+function useCanvas<T extends keyof CanvasContext>
+    ({ contextId, render }: useCanvasProps<T>) {
 
     const canvasRef = React.useRef<HTMLCanvasElement>(null);
 
@@ -26,14 +27,7 @@ function useCanvas<T extends keyof CanvasContext>({ contextId, render }: useCanv
         let animationFrameId: number;
         function renderLoop(context: RenderingContext) {
             // Drawing code
-            switch(contextId) {
-                case '2d':
-                    render(context as CanvasContext[T])
-                    break;
-                case 'webgl2':
-                    render(context as CanvasContext[T])
-                    break;
-            }
+            render(context as CanvasContext[T]); // casts to correct RenderingContext type
             // Continue render loop
             animationFrameId = requestAnimationFrame(() => renderLoop(context));
         }

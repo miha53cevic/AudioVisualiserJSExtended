@@ -8,9 +8,6 @@ class Renderer2D {
 
     constructor(context2D: CanvasRenderingContext2D) {
         this._context2D = context2D;
-
-        this.Width = context2D.canvas.width;
-        this.Height = context2D.canvas.height;
         this.MousePos = { x: 0, y: 0 };
 
         context2D.canvas.addEventListener('mousemove', (evt) => {
@@ -18,8 +15,8 @@ class Renderer2D {
         }, false);
     }
 
-    public Width: number;
-    public Height: number;
+    public Width() { return this._context2D.canvas.width; }
+    public Height() { return this._context2D.canvas.height; }
     public MousePos: Point;
 
     private GetMousePosition(canvas: HTMLCanvasElement, evt: globalThis.MouseEvent): Point {
@@ -32,7 +29,7 @@ class Renderer2D {
 
     public Clear(colour = 'black') {
         this._context2D.fillStyle = colour;
-        this._context2D.fillRect(0, 0, this.Width, this.Height);
+        this._context2D.fillRect(0, 0, this.Width(), this.Height());
     }
 
     public ClearPart(colour: string, x1: number, y1: number, x2: number, y2: number) {
