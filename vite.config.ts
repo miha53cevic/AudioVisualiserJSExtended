@@ -18,5 +18,6 @@ export default defineConfig({
             '@analysers': path.resolve(__dirname, './src/analysers'),
             '@util': path.resolve(__dirname, './src/util/index'),
         }
-    }
+    },
+    base: '/AudioVisualiserJSExtended/'
 })
