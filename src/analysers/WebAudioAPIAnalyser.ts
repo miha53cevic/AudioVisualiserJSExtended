@@ -1,4 +1,4 @@
-import Analyser from "./Analyser.ts";
+import Analyser from "./Analyser";
 
 class WebAudioAPIAnalyser extends Analyser {
     private readonly _audioContext: AudioContext;

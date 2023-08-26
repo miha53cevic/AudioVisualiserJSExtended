@@ -3,20 +3,9 @@ import Canvas2D from "@components/Canvas2D";
 import { Form, Navbar, Button, Stack, DropdownButton } from "react-bootstrap";
 import FormRange from "react-bootstrap/FormRange";
 import { PlayFill, VolumeUpFill, GearFill, PauseFill } from "react-bootstrap-icons";
+import { audioElement, minuteSecondFormat } from "@util";
 
 type AudioState = 'playing' | 'paused';
-
-const audioElement = document.getElementById('audioElement') as HTMLAudioElement;
-
-function minuteSecondFormat(seconds: number) {
-    const min = Math.floor(seconds / 60);
-    const sec = Math.floor(seconds % 60);
-    let minString = `${min}`;
-    let secString = `${sec}`;
-    if (min < 10) minString = `0${minString}`;
-    if (sec < 10) secString = `0${secString}`;
-    return `${minString}:${secString}`;
-}
 
 function IndexPage() {
 
@@ -56,17 +45,21 @@ function IndexPage() {
 
     const [canvasSize, setCanvasSize] = React.useState({
         width: window.innerWidth,
-        height: 500,
+        height: 0,
     });
 
     React.useEffect(() => {
+        window.onload = function() {
+            window.dispatchEvent(new Event('resize'));
+        }
         window.onresize = function() {
             setCanvasSize({
                width: window.innerWidth,
-               height: window.innerHeight - document.getElementById('controlArea')!.clientHeight,
+               height: window.innerHeight - document.getElementById('controlArea')!.clientHeight - document.getElementById('uploadAudio')!.clientHeight,
             });
         }
         return () => {
+            window.onload = null;
             window.onresize = null;
         }
     }, []);
@@ -95,13 +88,14 @@ function IndexPage() {
 
     return (
         <main>
-            <Form.Control type='file' onChange={handleAudioUpload} accept='audio/*' />
+            <Form.Control id='uploadAudio' type='file' accept='audio/*' data-bs-theme={'dark'} onChange={handleAudioUpload} />
+
             <Canvas2D width={canvasSize.width} height={canvasSize.height} />
 
             <div id='controlArea' className='fixed-bottom bg-dark'>
                 <Stack id='timeline' direction='horizontal' gap={2} className='px-3 py-2'>
                     <i className='text-white'>{minuteSecondFormat(audioCurrentTime)}</i>
-                    <FormRange id='timelineRange' min={0} max={audioTotalTime} step={1} value={audioCurrentTime} onChange={handleTimelineUserChange} />
+                    <FormRange id='timelineRange' min={0} max={Math.floor(audioTotalTime)} step={1} value={Math.floor(audioCurrentTime)} onChange={handleTimelineUserChange} />
                     <i className='text-white'>{minuteSecondFormat(audioTotalTime)}</i>
                 </Stack>
                 <Navbar id='controls' bg='dark' className='p-3'>

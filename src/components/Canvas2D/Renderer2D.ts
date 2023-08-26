@@ -155,7 +155,7 @@ class Renderer2D {
             const y = cy + r * Math.sin(this.ToRadian(a));
 
             // Translate to the circle center then translate to each point and rotate it
-            this.Translate(centerX / 2, centerY / 2);
+            this.Translate(centerX, centerY);
             this.Translate(x, y);
             this.Rotate(this.ToRadian(a));
             this.DrawFillRect(0, 0, array[i], width, colour);
