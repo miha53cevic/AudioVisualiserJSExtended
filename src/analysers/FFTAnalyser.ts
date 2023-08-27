@@ -3,19 +3,17 @@ import { audioElement } from "@util";
 import FFT from 'fft.js';
 
 class FFTAnalyser extends Analyser {
-    private _audioContext: AudioContext;
-    private _source: AudioBufferSourceNode;
-    private _data: Float32Array;
     private readonly _N: number;
+    private _data: Float32Array;
+    private _sampleRate: number;
     private _lastAudioSource: string;
 
     constructor(fftSize: number = 2**14) {
         super();
 
         this._N = fftSize;
-        this._audioContext = new AudioContext();
-        this._source = this._audioContext.createBufferSource();
         this._data = new Float32Array();
+        this._sampleRate = 0;
         this._lastAudioSource = '';
 
         audioElement.oncanplaythrough = async () => {
@@ -27,27 +25,27 @@ class FFTAnalyser extends Analyser {
             const blob = await res.blob();
             const arrayBuffer = await blob.arrayBuffer();
 
+            const audioContext = new AudioContext();
+
             // Decode audio
-            this._source = this._audioContext.createBufferSource();
-            const buffer = await this._audioContext.decodeAudioData(arrayBuffer);
-            this._source.buffer = buffer;
-            this._source.connect(this._audioContext.destination);
+            const buffer = await audioContext.decodeAudioData(arrayBuffer);
 
             console.log(buffer);
 
+            this._sampleRate = buffer.sampleRate;
+
             // Audio samples
-            this._data = this._source.buffer.getChannelData(0);
+            this._data = buffer.getChannelData(0);
+
+            await audioContext.close();
         }
     }
 
     public GetPeakMaxArray(): number[] {
-        // Wait for the audio data to load first
-        if (!this._source.buffer) return [];
-
         // Get first data bin position for current time in the song
         // example: 5 seconds * 44100(sampleRate) means that our starting position is 220500
         //          and then we take N number of bins from that position onward
-        const mark = Number.parseInt((this._audioElement.currentTime * this._source.buffer.sampleRate).toString());
+        const mark = Number.parseInt((this._audioElement.currentTime * this._sampleRate).toString());
 
         const input = new Float32Array(this._N);
 
@@ -72,7 +70,7 @@ class FFTAnalyser extends Analyser {
         for (let i = 0; i < (this._N / 2); i++) {
 
             // bin frequency = binNumber * sampleRate / N
-            const freq = i * this._source.buffer.sampleRate / this._N;
+            const freq = i * this._sampleRate / this._N;
             const realPart = output[i * 2];
             const imagPart = output[i * 2 + 1];
             const magnitude = Math.sqrt(realPart*realPart + imagPart*imagPart);
