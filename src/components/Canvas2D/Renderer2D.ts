@@ -5,8 +5,22 @@ interface Point {
 
 class Renderer2D {
     private _context2D: CanvasRenderingContext2D;
+    private static _instance: Renderer2D | null;
 
-    constructor(context2D: CanvasRenderingContext2D) {
+    // Create singleton, otherwise in render2D we keep creating new instances
+    public static GetInstance(context2D: CanvasRenderingContext2D) {
+        if (!this._instance) {
+            this._instance = new Renderer2D(context2D);
+            console.log("[Renderer2D]: Created renderer2D singleton");
+        }
+        else if (this._instance._context2D !== context2D) {
+            this._instance = new Renderer2D(context2D);
+            console.log("[Renderer2D]: New context2D instance");
+        }
+        return this._instance;
+    }
+
+    private constructor(context2D: CanvasRenderingContext2D) {
         this._context2D = context2D;
         this.MousePos = { x: 0, y: 0 };
 

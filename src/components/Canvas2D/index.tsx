@@ -30,7 +30,7 @@ function CircleGraph(r2d: Renderer2D, peakMaxArray: number[]) {
 }
 
 function render2d(ctx: CanvasRenderingContext2D) {
-    const r2d = new Renderer2D(ctx);
+    const r2d = Renderer2D.GetInstance(ctx);
     r2d.Clear('rgb(51, 51, 51)');
     if (!audioElement.paused && audioElement.currentTime) {
         const peakMaxArray = analyser.GetPeakMaxArray();
