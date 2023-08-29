@@ -1,5 +1,6 @@
 import React from 'react';
 import Canvas2D from "@components/Canvas2D";
+import CanvasGL from "@components/CanvasGL";
 import { Form, Navbar, Button, Stack, DropdownButton } from "react-bootstrap";
 import FormRange from "react-bootstrap/FormRange";
 import { PlayFill, VolumeUpFill, GearFill, PauseFill } from "react-bootstrap-icons";
@@ -90,7 +91,7 @@ function IndexPage() {
         <main>
             <Form.Control id='uploadAudio' type='file' accept='audio/*' data-bs-theme={'dark'} onChange={handleAudioUpload} />
 
-            <Canvas2D width={canvasSize.width} height={canvasSize.height} />
+            <CanvasGL width={canvasSize.width} height={canvasSize.height} />
 
             <div id='controlArea' className='fixed-bottom bg-dark'>
                 <Stack id='timeline' direction='horizontal' gap={2} className='px-3 py-2'>
