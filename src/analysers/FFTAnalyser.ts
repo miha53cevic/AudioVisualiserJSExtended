@@ -42,6 +42,9 @@ class FFTAnalyser extends Analyser {
     }
 
     public GetPeakMaxArray(): number[] {
+        if (audioElement.paused || audioElement.currentTime == 0) {
+            return [];
+        }
         // Get first data bin position for current time in the song
         // example: 5 seconds * 44100(sampleRate) means that our starting position is 220500
         //          and then we take N number of bins from that position onward

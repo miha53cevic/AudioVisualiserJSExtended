@@ -87,6 +87,8 @@ function IndexPage() {
         if (audioElement.paused) await audioElement.play();
     }
 
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////
+
     return (
         <main>
             <Form.Control id='uploadAudio' type='file' accept='audio/*' data-bs-theme={'dark'} onChange={handleAudioUpload} />

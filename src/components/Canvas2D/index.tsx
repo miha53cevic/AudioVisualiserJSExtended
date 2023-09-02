@@ -1,6 +1,5 @@
 import useCanvas from "@hooks/useCanvas";
 import Renderer2D from "@components/Canvas2D/Renderer2D";
-import { audioElement } from "@util";
 import FFTAnalyser from "@analysers/FFTAnalyser";
 
 export interface Canvas2DProps {
@@ -32,12 +31,10 @@ function CircleGraph(r2d: Renderer2D, peakMaxArray: number[]) {
 function render2d(ctx: CanvasRenderingContext2D) {
     const r2d = Renderer2D.GetInstance(ctx);
     r2d.Clear('rgb(51, 51, 51)');
-    if (!audioElement.paused && audioElement.currentTime) {
-        const peakMaxArray = analyser.GetPeakMaxArray();
-        r2d.Clear('rgb(51, 51, 51)');
-        BarGraph(r2d, peakMaxArray);
-        CircleGraph(r2d, peakMaxArray);
-    }
+    const peakMaxArray = analyser.GetPeakMaxArray();
+    r2d.Clear('rgb(51, 51, 51)');
+    BarGraph(r2d, peakMaxArray);
+    CircleGraph(r2d, peakMaxArray);
 }
 
 function Canvas2D({ width, height }: Canvas2DProps) {
