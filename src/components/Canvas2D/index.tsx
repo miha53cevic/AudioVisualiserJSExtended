@@ -1,13 +1,11 @@
 import useCanvas from "@hooks/useCanvas";
 import Renderer2D from "@components/Canvas2D/Renderer2D";
-import FFTAnalyser from "@analysers/FFTAnalyser";
+import { analyser } from "@util";
 
 export interface Canvas2DProps {
     width: string | number,
     height: string | number,
 }
-
-const analyser = new FFTAnalyser();
 
 function BarGraph(r2d: Renderer2D, peakMaxArray: number[]) {
     for (let i = 0; i < peakMaxArray.length; i++) {
@@ -32,7 +30,6 @@ function render2d(ctx: CanvasRenderingContext2D) {
     const r2d = Renderer2D.GetInstance(ctx);
     r2d.Clear('rgb(51, 51, 51)');
     const peakMaxArray = analyser.GetPeakMaxArray();
-    r2d.Clear('rgb(51, 51, 51)');
     BarGraph(r2d, peakMaxArray);
     CircleGraph(r2d, peakMaxArray);
 }
@@ -45,7 +42,7 @@ function Canvas2D({ width, height }: Canvas2DProps) {
     });
 
     return (
-        <canvas ref={canvasRef} width={width} height={height} />
+        <canvas id={'canvas2D'} ref={canvasRef} width={width} height={height} />
     );
 }
 

@@ -42,7 +42,7 @@ class FFTAnalyser extends Analyser {
     }
 
     public GetPeakMaxArray(): number[] {
-        if (audioElement.paused || audioElement.currentTime == 0) {
+        if (audioElement.paused || audioElement.currentTime === 0) {
             return [];
         }
         // Get first data bin position for current time in the song

@@ -4,6 +4,7 @@ type CanvasContext = {
     '2d': CanvasRenderingContext2D,
     'webgl2': WebGL2RenderingContext,
 };
+export type CanvasTypes = keyof CanvasContext;
 
 export interface useCanvasProps<T extends keyof CanvasContext> {
     contextId: T,

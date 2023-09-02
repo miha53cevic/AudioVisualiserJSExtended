@@ -1,3 +1,5 @@
+import FFTAnalyser from "@analysers/FFTAnalyser";
+
 export const audioElement = document.getElementById('audioElement') as HTMLAudioElement;
 
 export function minuteSecondFormat(seconds: number) {
@@ -29,3 +31,46 @@ export function HSV2RGB(H: number, S: number, V: number) {
             f(1),
     ];
 }
+
+export interface Visualiser2DSettings {
+    barGraph: boolean,
+    circleGraph: boolean,
+    quadSize: number,
+    peakScale: number,
+    circleGraphInitialRadius: number,
+    barGraphQuadColour: string,
+    circleGraphQuadColour: string,
+}
+
+export interface VisualiserGLSettings {
+    startAngle: number,
+    endAngle: number,
+    circleRadius: number,
+    barAmpScale: number,
+    barHSV: [number, number, number],
+    cameraPos: [number, number, number],
+    cameraRot: [number, number, number],
+}
+
+export const Visualiser2DDefaultSettings: Visualiser2DSettings = {
+    barGraph: true,
+    circleGraph: true,
+    quadSize: 8,
+    peakScale: 0.25,
+    circleGraphInitialRadius: 25,
+    barGraphQuadColour: 'cyan',
+    circleGraphQuadColour: 'red',
+};
+
+export const VisualiserGLDefaultSettings: VisualiserGLSettings = {
+    startAngle: 0,
+    endAngle: 360,
+    circleRadius: 50,
+    barAmpScale: 0.125,
+    barHSV: [0, 100, 50],
+    cameraPos: [0, 50, 70],
+    cameraRot: [-45, 0, 0],
+};
+
+// TODO: Needs to be made into singleton or some kind of factory
+export const analyser = new FFTAnalyser();

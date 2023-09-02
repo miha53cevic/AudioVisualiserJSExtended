@@ -1,15 +1,12 @@
 import useCanvas from "@hooks/useCanvas";
 import RendererGL from "@components/CanvasGL/RendererGL";
-import FFTAnalyser from "@analysers/FFTAnalyser";
 import { MeshBasicMaterial } from "three";
-import { HSV2RGB, toRadian } from "@util";
+import { HSV2RGB, toRadian, analyser } from "@util";
 
 export interface CanvasGLProps {
     width: string | number,
     height: string | number,
 }
-
-const analyser = new FFTAnalyser();
 
 function renderGL(ctx: WebGL2RenderingContext) {
     const rgl = RendererGL.GetInstance(ctx);
@@ -24,8 +21,8 @@ function renderGL(ctx: WebGL2RenderingContext) {
     const availableAngleSpace: number = endAngle - startAngle;
 
     const circleRadius: number = 50;
-    const barAmp: number = 0.125;
-    const barHSV: number[] = [0, 100, 50];
+    const barAmpScale: number = 0.125;
+    const barHSV: [number, number, number] = [0, 100, 50];
 
     const angle: number = availableAngleSpace / peakMaxArray.length;
     for (let i = 0; i < peakMaxArray.length; i++)
@@ -41,7 +38,7 @@ function renderGL(ctx: WebGL2RenderingContext) {
         const z: number = cy + r * Math.sin(toRadian(a));
 
         const cube = rgl.GetCube();
-        const height: number = peakMaxArray[i] * barAmp;
+        const height: number = peakMaxArray[i] * barAmpScale;
         cube.scale.y = height; // scales in positive and negative direction so half in half on each direction
         cube.position.x = x;
         cube.position.y = height / 2; // translate the bottom upwards (because of scale)
@@ -63,7 +60,7 @@ function CanvasGL({ width, height }: CanvasGLProps) {
     });
 
     return (
-        <canvas ref={canvasRef} width={width} height={height} />
+        <canvas id={'canvasGL'} ref={canvasRef} width={width} height={height} />
     );
 }
 
