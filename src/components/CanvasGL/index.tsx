@@ -1,6 +1,6 @@
 import useCanvas from "@hooks/useCanvas";
 import RendererGL from "@components/CanvasGL/RendererGL";
-import { MeshBasicMaterial } from "three";
+import { MeshBasicMaterial, MathUtils } from "three";
 import { HSV2RGB, toRadian, analyser } from "@util";
 
 export interface CanvasGLProps {
@@ -48,8 +48,19 @@ function renderGL(ctx: WebGL2RenderingContext) {
         const rgb = HSV2RGB(i * ((360 - barHSV[0]) / peakMaxArray.length) + barHSV[0], barHSV[1], barHSV[2]);
         (cube.material as MeshBasicMaterial).color.setRGB(rgb[0], rgb[1], rgb[2]);
 
-        rgl.DrawCube(cube);
+        rgl.DrawMesh(cube);
     }
+
+    // Add pulsating sphere
+    if (peakMaxArray.length) {
+        let average = peakMaxArray.reduce((prev, curr) => prev + curr) / peakMaxArray.length;
+        average *= 0.25;
+        average = MathUtils.clamp(average, 0, circleRadius);
+        const sphere = rgl.GetSphere();
+        sphere.scale.setScalar(average);
+        rgl.DrawMesh(sphere);
+    }
+
     rgl.RenderAndClearBuffers();
 }
 

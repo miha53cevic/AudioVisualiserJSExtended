@@ -7,6 +7,7 @@ class RendererGL {
     private readonly _camera: THREE.PerspectiveCamera;
     private readonly _scene: THREE.Scene;
     private readonly _cube: THREE.Mesh;
+    private readonly _sphere: THREE.Mesh;
 
     // Create singleton, otherwise in renderGL we keep creating new instances
     public static GetInstance(contextGL: WebGL2RenderingContext) {
@@ -32,10 +33,15 @@ class RendererGL {
         this._camera = new THREE.PerspectiveCamera(90, this.Width() / this.Height(), 0.1, 1000);
         this._scene = new THREE.Scene();
 
-        const geometry = new THREE.BoxGeometry(1.0, 1.0, 1.0);
-        const material = new THREE.MeshBasicMaterial();
-        this._cube = new THREE.Mesh(geometry, material);
-        this._scene.add(this._cube);
+        this._cube = new THREE.Mesh(
+            new THREE.BoxGeometry(1.0, 1.0, 1.0),
+            new THREE.MeshBasicMaterial()
+        );
+        this._sphere = new THREE.Mesh(
+            new THREE.SphereGeometry(),
+            new THREE.MeshBasicMaterial()
+        );
+
         this._camera.position.x = 0;
         this._camera.position.y = 50;
         this._camera.position.z = 70;
@@ -69,14 +75,20 @@ class RendererGL {
         this._scene.clear();
     }
 
+    public DrawMesh(mesh: THREE.Mesh) {
+        this._scene.add(mesh);
+    }
+
     public GetCube() {
         const clone = this._cube.clone();
         clone.material = (clone.material as THREE.Material).clone(); // deep copy material
         return clone;
     }
 
-    public DrawCube(cube: THREE.Mesh) {
-        this._scene.add(cube);
+    public GetSphere() {
+        const clone = this._sphere.clone();
+        clone.material = (clone.material as THREE.Material).clone(); // deep copy material
+        return clone;
     }
 }
 

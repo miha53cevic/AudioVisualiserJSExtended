@@ -59,6 +59,13 @@ function IndexPage() {
        }
     }, []);
 
+    async function handleTimelineUserChange(e:  React.ChangeEvent<HTMLInputElement>) {
+        audioElement.currentTime = Number.parseInt(e.target.value);
+
+        // Play the song if it ended
+        if (audioElement.paused) await audioElement.play();
+    }
+
     //////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     const [canvasSize, setCanvasSize] = React.useState({
@@ -85,6 +92,7 @@ function IndexPage() {
     //////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     const [audioVolume, setAudioVolume] = React.useState<number>(1.0);
+    const [audioState, setAudioState] = React.useState<AudioState>('playing');
 
     React.useEffect(() => {
         audioElement.onvolumechange = function() {
@@ -95,17 +103,22 @@ function IndexPage() {
         if (volume) {
             audioElement.volume = Number.parseInt(volume) / 100;
         }
+        audioElement.onpause = function() {
+            setAudioState('paused');
+        }
+        audioElement.onplay = function() {
+            setAudioState('playing');
+        }
+
         return () => {
             audioElement.onvolumechange = null;
+            audioElement.onpause= null;
+            audioElement.onplay = null;
         };
     }, []);
 
-    const [audioState, setAudioState] = React.useState<AudioState>('playing');
-
     function handleAudioStateChange() {
         (audioState === 'playing') ? audioElement.pause() : audioElement.play();
-
-        setAudioState(oldState => oldState === 'playing' ? 'paused' : 'playing');
     }
 
     async function handleVolumeChange(volume: string) {
@@ -113,13 +126,6 @@ function IndexPage() {
         console.log(`Set volume to ${volume}`);
 
         localStorage.setItem('volume', volume);
-    }
-
-    async function handleTimelineUserChange(e:  React.ChangeEvent<HTMLInputElement>) {
-        audioElement.currentTime = Number.parseInt(e.target.value);
-
-        // Play the song if it ended
-        if (audioElement.paused) await audioElement.play();
     }
 
     //////////////////////////////////////////////////////////////////////////////////////////////////////////
