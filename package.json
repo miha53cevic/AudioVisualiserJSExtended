@@ -12,6 +12,7 @@
     "deploy": "gh-pages -d dist"
   },
   "dependencies": {
+    "@popperjs/core": "^2.11.8",
     "bootstrap": "^5.3.1",
     "fft.js": "https://github.com/indutny/fft.js/",
     "react": "^18.2.0",
