@@ -1,7 +1,6 @@
-import React from "react";
 import { Modal, Row, Col, Form, FloatingLabel } from "react-bootstrap";
 
-import { Visualiser2DSettings, Visualiser2DDefaultSettings, VisualiserGLSettings, VisualiserGLDefaultSettings } from "@util";
+//import { Visualiser2DSettings, Visualiser2DDefaultSettings, VisualiserGLSettings, VisualiserGLDefaultSettings } from "@util";
 import { CanvasTypes } from "@hooks/useCanvas";
 
 export interface SettingsModalProps {
@@ -12,8 +11,8 @@ export interface SettingsModalProps {
 }
 
 function SettingsModal({ open, close, enabledCanvas, setEnabledCanvas }: SettingsModalProps) {
-    const [v2dSettings, setV2dSettings] = React.useState<Visualiser2DSettings>(Visualiser2DDefaultSettings);
-    const [vglSettings, setVglSettings] = React.useState<VisualiserGLSettings>(VisualiserGLDefaultSettings);
+    //const [v2dSettings, setV2dSettings] = React.useState<Visualiser2DSettings>(Visualiser2DDefaultSettings);
+    //const [vglSettings, setVglSettings] = React.useState<VisualiserGLSettings>(VisualiserGLDefaultSettings);
 
     return (
         <Modal id='settingsModal' show={open} onHide={close} fullscreen={true}>

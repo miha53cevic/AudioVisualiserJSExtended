@@ -1,4 +1,4 @@
-import { Navbar, Button } from "react-bootstrap";
+import { Button, Navbar } from "react-bootstrap";
 import { GearFill } from "react-bootstrap-icons";
 
 import AudioControl from "./AudioControl";
@@ -9,18 +9,18 @@ export interface AudioControlsProps {
     openSettings: () => void,
 }
 
-function AudioControls({ openSettings }: AudioControlsProps) {
+function AudioControls({openSettings}: AudioControlsProps) {
 
     return (
         <div id='controlArea' className='fixed-bottom bg-dark'>
-            <TimelineControl />
+            <TimelineControl/>
             <Navbar id='controls' bg='dark' className='p-3'>
-                <AudioControl />
+                <AudioControl/>
                 <div className='mx-auto'>
-                    <PlayControl />
+                    <PlayControl/>
                 </div>
                 <Button id='settingsButton' onClick={openSettings}>
-                    <GearFill size='32' />
+                    <GearFill size='32'/>
                 </Button>
             </Navbar>
         </div>
